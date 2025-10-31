@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KING TJ TECH — Unban Letter Generator</title>
+<style>
+  :root{--bg:#0f172a;--card:#ffffff;--accent:#0ea5a4;--muted:#64748b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#071029 0%, #0f172a 100%);color:var(--card);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .container{width:100%;max-width:920px;background:linear-gradient(180deg,#0b1220, #071029);border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 30px rgba(2,6,23,0.7)}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .logo{width:56px;height:56px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;color:#022; font-size:18px}
+  h1{margin:0;font-size:20px}
+  p.desc{margin:0;color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+  label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+  input[type="text"], select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--card);resize:vertical}
+  textarea{min-height:220px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button{background:var(--accent);color:#022;border:0;padding:10px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+  button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--card);font-weight:600}
+  .small{font-size:13px;color:var(--muted);margin-top:8px}
+  .footer{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
+  @media (max-width:760px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="title">
+    <header>
+      <div class="logo">KT</div>
+      <div>
+        <h1 id="title">KING TJ TECH — Unban Letter Generator</h1>
+        <p class="desc">Unban your WhatsApp number — enter your number, choose the appeal type, then copy or email the generated message.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card" aria-labelledby="inputs">
+        <div id="inputs">
+          <label for="phone">WhatsApp number (include country code, e.g. +2348012345678)</label>
+          <input id="phone" type="text" placeholder="+1234567890" inputmode="tel" />
+
+          <label for="banType" style="margin-top:12px">Choose appeal type</label>
+          <select id="banType">
+            <option value="temporary">Unban — Temporary suspension (polite, explanatory)</option>
+            <option value="permanent_friendly">Unban — Permanent ban (friendly, respectful)</option>
+            <option value="permanent_formal">Unban — Permanent ban (formal, evidence-oriented)</option>
+          </select>
+
+          <div class="small">Tip: be honest and include any supporting evidence when you send this to WhatsApp support. Do not impersonate or fabricate facts.</div>
+
+          <div class="controls" style="margin-top:12px">
+            <button id="generate">Generate Letter</button>
+            <button id="copy" class="secondary" title="Copy letter to clipboard">Copy</button>
+            <button id="download" class="secondary" title="Download as text file">Download .txt</button>
+            <button id="mailto" class="secondary" title="Open email client to send to WhatsApp support">Email to Support</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" aria-labelledby="preview">
+        <div id="preview">
+          <label for="output">Generated letter preview</label>
+          <textarea id="output" readonly placeholder="Generated letter will appear here..."></textarea>
+          <div class="small" style="margin-top:8px">At the end of every letter we include the KING TJ TECH channel promo as requested.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">Made with ❤️ by KING TJ TECH — "Unban ur WhatsApp number and feel like a KING"</div>
+  </div>
+
+<script>
+(function(){
+  const phoneInput = document.getElementById('phone');
+  const banType = document.getElementById('banType');
+  const output = document.getElementById('output');
+  const generateBtn = document.getElementById('generate');
+  const copyBtn = document.getElementById('copy');
+  const downloadBtn = document.getElementById('download');
+  const mailtoBtn = document.getElementById('mailto');
+
+  const CHANNEL_LINK = "follow KING TJ TECH CHANNEL https://whatsapp.com/channel/0029VbBcIHr9hXF9eDmZpx0U";
+
+  function sanitizeNumber(n){
+    if(!n) return '';
+    // basic cleanup: keep + and digits
+    return n.trim().replace(/[^+\d]/g,'');
+  }
+
+  function buildTemporary(number){
+    return (
+`To WhatsApp Support Team,
+
+I am writing to request a review and reinstatement of my WhatsApp account associated with the phone number ${number}. I recently discovered that my account was temporarily suspended, and I believe this may be the result of a misunderstanding or an automated enforcement action.
+
+I value WhatsApp as my primary communication channel for family, friends and important community contacts. If any of my actions or messages unintentionally violated your Terms of Service, I sincerely apologize — this was not deliberate. I am ready to correct any behavior and comply with WhatsApp's guidelines.
+
+Please review my account and, if possible, lift the temporary suspension so I can continue using WhatsApp. I am happy to provide any additional information you require to help with the review.
+
+Thank you for your time and assistance.
+
+${CHANNEL_LINK}`
+    );
+  }
+
+  function buildPermanentFriendly(number){
+    return (
+`Dear WhatsApp Support,
+
+My name is the owner of the phone number ${number}. I recently discovered that my account has been permanently banned. I respectfully request a full review of this decision.
+
+WhatsApp is essential for my personal and professional life. If any content or action associated with my account violated your policies, I apologize sincerely and assure you it was not intentional. I value the platform and its community standards, and I will take any steps required to comply moving forward.
+
+Please consider restoring my account or advising me on the necessary steps to resolve this issue. I appreciate your careful review and the effort your team puts into maintaining a safe platform.
+
+Kind regards,
+
+${CHANNEL_LINK}`
+    );
+  }
+
+  function buildPermanentFormal(number){
+    return (
+`To the WhatsApp Review Team,
+
+Subject: Request for review of permanent ban — account ${number}
+
+I am contacting you to formally request a re-evaluation of the permanent ban applied to my WhatsApp account associated with ${number}. I respectfully ask that you review the decision and the evidence supporting it.
+
+I rely on this account for essential communications. If a violation occurred, I would appreciate specific details so that I can address the cause and prevent recurrence. If there is any additional information, logs, or context I can provide to assist your investigation, please let me know — I will cooperate fully.
+
+Thank you for conducting a thorough review of my case. Your reconsideration would be greatly appreciated.
+
+Sincerely,
+
+${CHANNEL_LINK}`
+    );
+  }
+
+  function generate(){
+    const raw = phoneInput.value;
+    const num = sanitizeNumber(raw);
+    if(!num){
+      alert('Please enter your WhatsApp number (include country code, e.g. +2348012345678).');
+      phoneInput.focus();
+      return;
+    }
+
+    let letter = '';
+    const type = banType.value;
+    if(type === 'temporary'){
+      letter = buildTemporary(num);
+    } else if(type === 'permanent_friendly'){
+      letter = buildPermanentFriendly(num);
+    } else if(type === 'permanent_formal'){
+      letter = buildPermanentFormal(num);
+    } else {
+      letter = buildTemporary(num);
+    }
+
+    output.value = letter;
+    output.focus();
+    output.select();
+  }
+
+  generateBtn.addEventListener('click', (e) => { e.preventDefault(); generate(); });
+
+  copyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(!output.value){ alert('Generate a letter first.'); return; }
+    navigator.clipboard.writeText(output.value).then(()=> {
+      copyBtn.textContent = 'Copied ✓';
+      setTimeout(()=> copyBtn.textContent = 'Copy', 1500);
+    }).catch(()=> alert('Could not copy — try selecting the text and copying manually.'));
+  });
+
+  downloadBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(!output.value){ alert('Generate a letter first.'); return; }
+    const blob = new Blob([output.value], {type: 'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const filename = 'whatsapp-unban-' + (sanitizeNumber(phoneInput.value) || 'number') + '.txt';
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+
+  mailtoBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(!output.value){ alert('Generate a letter first.'); return; }
+    const supportEmail = 'support@support.whatsapp.com'; // common WhatsApp support email; you may replace as needed
+    const subj = encodeURIComponent('Request to review ban on WhatsApp account ' + sanitizeNumber(phoneInput.value));
+    const body = encodeURIComponent(output.value + "\n\n"); // mailto body
+    // open mail client
+    window.location.href = `mailto:${supportEmail}?subject=${subj}&body=${body}`;
+  });
+
+  // quick generate on Enter in phone input when banType selected
+  phoneInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') { e.preventDefault(); generate(); }
+  });
+
+  // example placeholder
+  phoneInput.placeholder = '+2348012345678';
+  output.placeholder = 'Generated letter will appear here...';
+
+})();
+</script>
+</body>
+</html>
